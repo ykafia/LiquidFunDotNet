@@ -1,4 +1,9 @@
-# Box2DNet
-Fork from http://code.google.com/p/box2dx/
+# LiquidFunDoNet
+Fork from https://github.com/codeyu/Box2DNet
 
-Box2DNet is a C# port of Box2D - Erin Catto's 2D Physics Engine. You can find original C++ version on www.box2d.org
+# What it is
+LiquidFunDotNet is an attempt to recreate liquid fun in the .Net framework.
+
+# Requirements
+Visual Studio 2017
+.Net Framework 4.5
