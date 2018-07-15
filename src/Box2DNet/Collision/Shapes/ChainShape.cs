@@ -7,14 +7,14 @@ using Box2DNet.Common;
 
 namespace Box2DNet.Collision.Shapes
 {
-    class RopeShape : Shape,ICloneable
+    class ChainShape : Shape,ICloneable
     {
         public int m_count;
         public List<Vec2> m_vertices;
         public Vec2 m_prevVertex, m_nextVertex;
         public bool m_hasPrevVertex, m_hasNextVertex;
 
-        public RopeShape()
+        public ChainShape()
         {
             _type = ShapeType.RopeShape;
             _radius = Settings.PolygonRadius;
@@ -64,15 +64,28 @@ namespace Box2DNet.Collision.Shapes
         }
         
 
-        public override void ComputeAABB(out AABB aabb, XForm xf)
+        public void ComputeAABB(out AABB aabb, XForm xf, int childIndex)
         {
-            throw new NotImplementedException();
-            
+            int i1 = childIndex;
+            int i2 = childIndex + 1;
+            if (i2 == m_count)
+            {
+                i2 = 0;
+            }
+            // TODO : Check if the override of the AABB function needed
+            Vec2 v1 = MathB2.Mul(xf, m_vertices[i1]);
+            Vec2 v2 = MathB2.Mul(xf, m_vertices[i2]);
+
+            aabb.LowerBound = MathB2.Min(v1, v2);
+            aabb.UpperBound = MathB2.Max(v1, v2);
+
         }
 
         public override void ComputeMass(out MassData massData, float density)
         {
-            throw new NotImplementedException();
+            massData.Mass = 0.0f;
+            massData.Center = new Vec2(0,0);
+            massData.I = 0.0f;
         }
 
         public override float ComputeSubmergedArea(Vec2 normal, float offset, XForm xf, out Vec2 c)
@@ -166,7 +179,34 @@ namespace Box2DNet.Collision.Shapes
             }
         }
 
-        public void ComputeDistance(MathB2.Transform xf, const b2Vec2& p, float32* distance, b2Vec2* normal, int32 childIndex)
+        public void ComputeDistance(XForm xf, Vec2 p, float distance, Vec2 normal, int childIndex)
+        {
+            EdgeShape edge = new EdgeShape();
+            getChildEdge(edge, childIndex);
+            edge.ComputeDistance(xf, p, distance, normal, 0);
+        }
+        
+        public bool RayCast(RayCastOutput output, RayCastInput input,XForm xf,int childIndex)
+        {
+            EdgeShape edgeShape = new EdgeShape();
+
+            int i1 = childIndex;
+            int i2 = childIndex + 1;
+            if (i2 == m_count)
+            {
+                i2 = 0;
+            }
+
+            edgeShape._v1 = m_vertices[i1];
+            edgeShape._v2 = m_vertices[i2];
+
+            return edgeShape.RayCast(output, input, xf, 0);
+        }
+
+        public override void ComputeAABB(out AABB aabb, XForm xf)
+        {
+            throw new NotImplementedException();
+        }
 
         public int VertexCount { get { return this.m_vertices.Count; } }
     }

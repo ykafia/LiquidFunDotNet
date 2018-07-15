@@ -274,9 +274,7 @@ namespace Box2DNet.Common
         {
             return c1.X * c2.X + c1.Y * c2.Y;
         }
-        struct Transform
-        {
 
-        }
+        
     }
 }

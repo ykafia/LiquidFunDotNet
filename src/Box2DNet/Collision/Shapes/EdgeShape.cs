@@ -171,7 +171,7 @@ namespace Box2DNet.Collision
 			//Note that v0 is independent of any details of the specific edge
 			//We are relying on v0 being consistent between multiple edges of the same body
 			Vec2 v0 = offset * normal;
-			//b2Vec2 v0 = xf.position + (offset - b2Dot(normal, xf.position)) * normal;
+			//Vec2 v0 = xf.position + (offset - b2Dot(normal, xf.position)) * normal;
 
 			Vec2 v1 = Common.MathB2.Mul(xf, _v1);
 			Vec2 v2 = Common.MathB2.Mul(xf, _v2);
@@ -215,7 +215,65 @@ namespace Box2DNet.Collision
 			return 0.5f * Vec2.Cross(e1, e2);
 		}
 
-		public float Length
+        internal bool RayCast(RayCastOutput output, RayCastInput input, XForm xf, int v)
+        {
+            Vec2 p1 = MathB2.MulT(xf.R, input.P1 - xf.Position);
+            Vec2 p2 = MathB2.MulT(xf.R, input.P2 - xf.Position);
+            Vec2 d = p2 - p1;
+
+            Vec2 v1 = _v1;
+            Vec2 v2 = _v2;
+            Vec2 e = v2 - v1;
+            Vec2 normal = new Vec2(e.Y, -e.X);
+            normal.Normalize();
+
+            // q = p1 + t * d
+            // dot(normal, q - v1) = 0
+            // dot(normal, p1 - v1) + t * dot(normal, d) = 0
+            float numerator = MathB2.Dot(normal, v1 - p1);
+            float denominator = MathB2.Dot(normal, d);
+
+            if (denominator == 0.0f)
+            {
+                return false;
+            }
+
+            float t = numerator / denominator;
+            if (t < 0.0f || input.MaxFraction < t)
+            {
+                return false;
+            }
+
+            Vec2 q = p1 + t * d;
+
+            // q = v1 + s * r
+            // s = dot(q - v1, r) / dot(r, r)
+            Vec2 r = v2 - v1;
+            float rr = MathB2.Dot(r, r);
+            if (rr == 0.0f)
+            {
+                return false;
+            }
+
+            float s = MathB2.Dot(q - v1, r) / rr;
+            if (s < 0.0f || 1.0f < s)
+            {
+                return false;
+            }
+
+            output.Fraction = t;
+            if (numerator > 0.0f)
+            {
+                output.Normal = -MathB2.Mul(xf.R, normal);
+            }
+            else
+            {
+                output.Normal = MathB2.Mul(xf.R, normal);
+            }
+            return true;
+        }
+
+        public float Length
 		{
 			get { return _length; }
 		}
@@ -282,5 +340,32 @@ namespace Box2DNet.Collision
 			float ds2 = Vec2.DistanceSquared(_v2, pivot);
 			return Common.MathB2.Sqrt(Common.MathB2.Max(ds1, ds2));
 		}
-	}
+        public void ComputeDistance(XForm xf, Vec2 p, float distance, Vec2 normal, int childIndex)
+        {
+
+            Vec2 v1 = MathB2.Mul(xf, _v1);
+            Vec2 v2 = MathB2.Mul(xf, _v2);
+
+            Vec2 d = p - v1;
+            Vec2 s = v2 - v1;
+            float ds = MathB2.Dot(d, s);
+            if (ds > 0)
+            {
+                float s2 = MathB2.Dot(s, s);
+                if (ds > s2)
+                {
+                    d = p - v2;
+                }
+                else
+                {
+                    d -= ds / s2 * s;
+                }
+            }
+
+            float d1 = d.Length();
+            distance = d1;
+            normal = d1 > 0 ? 1 / d1 * d : new Vec2(0,0);
+
+        }
+    }
 }

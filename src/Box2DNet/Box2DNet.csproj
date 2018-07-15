@@ -56,10 +56,11 @@
     <Compile Include="Collision\Shapes\CircleShape.cs" />
     <Compile Include="Collision\Shapes\EdgeShape.cs" />
     <Compile Include="Collision\Shapes\PolygonShape.cs" />
+    <Compile Include="Collision\Shapes\ChainShape.cs" />
     <Compile Include="Collision\Shapes\Shape.cs" />
     <Compile Include="Common\Mat22.cs" />
     <Compile Include="Common\Mat33.cs" />
-    <Compile Include="Common\Math.cs" />
+    <Compile Include="Common\MathB2.cs" />
     <Compile Include="Common\Settings.cs" />
     <Compile Include="Common\Sweep.cs" />
     <Compile Include="Common\Vec2.cs" />

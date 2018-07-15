@@ -29,6 +29,7 @@ namespace Box2DNet.Collision
 	/// </summary>
 	public struct MassData
 	{
+        
 		/// <summary>
 		/// The mass of the shape, usually in kilograms.
 		/// </summary>
@@ -43,6 +44,7 @@ namespace Box2DNet.Collision
 		/// The rotational inertia of the shape.
 		/// </summary>
 		public float I;
+        
 	}
 
 	/// <summary>
