@@ -17,10 +17,10 @@ namespace Box2DNet.Collision
             Vec2[] m_vertices;
             int m_count;
             float m_radius;
-
+            
             /// Initialize the proxy using the given shape. The shape
             /// must remain in scope while the proxy is in use.
-            void Set(Shape shape, int index)
+            public void Set(Shape shape, int index)
             {
                 switch (shape.Type)
                 {
@@ -77,33 +77,44 @@ namespace Box2DNet.Collision
                         break;
                 }
             }
-
+            public Vec2 GetVertex(int id)
+            {
+                return m_vertices[id];
+            }
 
 
         }
         struct SimplexVertex
         {
-            Vec2 wA;      // support point in proxyA
-            Vec2 wB;      // support point in proxyB
-            Vec2 w;       // wB - wA
-            float a;      // barycentric coordinate for closest point
-            int indexA;   // wA index
-            int indexB;   // wB index
+            public Vec2 wA;      // support point in proxyA
+            public Vec2 wB;      // support point in proxyB
+            public Vec2 w;       // wB - wA
+            public float a;      // barycentric coordinate for closest point
+            public int indexA;   // wA index
+            public int indexB;   // wB index
         }
-#error Implement Simplex
-        /*
+
+        
         struct Simplex
             {
-                void ReadCache( SimplexCache cache, DistanceProxy proxyA, XForm transformA, DistanceProxy proxyB, XForm transformB)
+            SimplexVertex[] m_v1, m_v2, m_v3;
+            int m_count;
+            private float m_radius;
+            private Vec2[] m_buffer;
+            private Vec2[] m_vertices;
+
+            void ReadCache( SimplexCache cache, DistanceProxy proxyA, XForm transformA, DistanceProxy proxyB, XForm transformB)
 	            {
                    
 
                 // Copy data from cache.
                 m_count = cache.count;
-		        SimplexVertex vertices = m_v1;
+		        SimplexVertex[] vertices = m_v1;
 		        for (int i = 0; i<m_count; ++i)
 		        {
-			        SimplexVertex v = vertices + i;
+
+
+                    SimplexVertex v = vertices[i];
                     v.indexA = cache.indexA[i];
 			        v.indexB = cache.indexB[i];
 			        Vec2 wALocal = proxyA.GetVertex(v.indexA);
@@ -120,7 +131,7 @@ namespace Box2DNet.Collision
 		{
 			float metric1 = cache.metric;
             float metric2 = GetMetric();
-			if (metric2< 0.5f * metric1 || 2.0f * metric1<metric2 || metric2<b2_epsilon)
+			if (metric2< 0.5f * metric1 || 2.0f * metric1<metric2 || metric2<Settings.FLT_EPSILON)
 			{
 				// Reset the simplex.
 				m_count = 0;
@@ -130,18 +141,45 @@ namespace Box2DNet.Collision
 		// If the cache is empty or invalid ...
 		if (m_count == 0)
 		{
-			SimplexVertex v = vertices + 0;
-    v.indexA = 0;
+			SimplexVertex v = vertices[0];
+            v.indexA = 0;
 			v.indexB = 0;
-			b2Vec2 wALocal = proxyA.GetVertex(0);
-    b2Vec2 wBLocal = proxyB.GetVertex(0);
-    v.wA = MathB2.Mul(transformA, wALocal);
-    v.wB = MathB2.Mul(transformB, wBLocal);
-    v.w = v.wB - v.wA;
+			Vec2 wALocal = proxyA.GetVertex(0);
+            Vec2 wBLocal = proxyB.GetVertex(0);
+            v.wA = MathB2.Mul(transformA, wALocal);
+            v.wB = MathB2.Mul(transformB, wBLocal);
+            v.w = v.wB - v.wA;
 			v.a = 1.0f;
 			m_count = 1;
 		}
 	}
+            
+            public float GetMetric()
+            {
+                
+                switch (m_count)
+                {
+                    case 0:
+                        return 0.0f;
+
+                    case 1:
+                        return 0.0f;
+
+                    case 2:
+                        return DistanceB2(m_v1.w, m_v2.w);
+
+                    case 3:
+                        return Cross(m_v2.w- m_v1.w, m_v3.w - m_v1.w);
+
+                    default:
+                        return 0.0f;
+                }
+            }
+
+            private float Cross(object p1, object p2)
+            {
+                throw new NotImplementedException();
+            }
 
 
             /// Get the supporting vertex index in the given direction.
@@ -175,7 +213,7 @@ namespace Box2DNet.Collision
             /// Get a vertex by index. Used by b2Distance.
             Vec2 GetVertex(int index)
             {
-
+                
             }   
             
 
@@ -184,10 +222,10 @@ namespace Box2DNet.Collision
         */
         struct SimplexCache
         {
-            float metric;     ///< length or area
-            int count;
-            int[] indexA;    ///< vertices on shape A
-            int[] indexB;    ///< vertices on shape B
+            public float metric;     ///< length or area
+            public int count;
+            public int[] indexA;    ///< vertices on shape A
+            public int[] indexB;    ///< vertices on shape B
         }
         struct DistanceInput
         {
