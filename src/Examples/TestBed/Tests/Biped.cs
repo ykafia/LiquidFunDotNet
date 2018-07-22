@@ -20,17 +20,13 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Box2DNet.Dynamics;
 using Box2DNet.Common;
-using Box2DNet.Collision;
-using Box2DNet.Dynamics;
 
 namespace TestBed
 {
-	// Ragdoll class thanks to darkzerox.
-	public class Biped: IDisposable
+    // Ragdoll class thanks to darkzerox.
+    public class Biped: IDisposable
 	{
 		public Biped(World w, Vec2 position)				
 		{

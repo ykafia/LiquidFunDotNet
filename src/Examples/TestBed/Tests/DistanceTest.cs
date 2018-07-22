@@ -68,10 +68,9 @@ namespace TestBed
 			input.UseRadii = true;
 			SimplexCache cache = new SimplexCache();
 			cache.Count = 0;
-			DistanceOutput output;
-			Collision.Distance(out output, ref cache, ref input, _polygonA, _polygonB);
+            Collision.Distance(out DistanceOutput output, ref cache, ref input, _polygonA, _polygonB);
 
-			StringBuilder strBld = new StringBuilder();
+            StringBuilder strBld = new StringBuilder();
 			strBld.AppendFormat("distance = {0}", new object[] { output.Distance });
 			OpenGLDebugDraw.DrawString(5, _textLine, strBld.ToString());
 			_textLine += 15;

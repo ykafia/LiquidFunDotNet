@@ -53,6 +53,7 @@ namespace Box2DNet.Collision
         public bool m_hasVertex0;
         public Vec2 m_vertex3{get;set;}
         public bool m_hasVertex3;
+        public Vec2[] Vertices { get; set; }
 
         public EdgeShape()
 		{
@@ -83,7 +84,7 @@ namespace Box2DNet.Collision
 		{
 			_v1 = v1;
 			_v2 = v2;
-
+            this.Vertices = new Vec2[] { v1, v2 };
 			_direction = _v2 - _v1;
 			_length = _direction.Normalize();
 			_normal = Vec2.Cross(_direction, 1.0f);
@@ -345,7 +346,7 @@ namespace Box2DNet.Collision
 
             Vec2 v1 = MathB2.Mul(xf, _v1);
             Vec2 v2 = MathB2.Mul(xf, _v2);
-
+            
             Vec2 d = p - v1;
             Vec2 s = v2 - v1;
             float ds = MathB2.Dot(d, s);

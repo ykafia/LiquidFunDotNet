@@ -408,7 +408,6 @@ namespace Box2DNet.Collision
 						c = new Vec2();
 						return 0;
 					}
-					break;
 				case 1:
 					if (intoIndex == -1)
 					{

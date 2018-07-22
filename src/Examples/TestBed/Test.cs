@@ -20,21 +20,14 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Box2DNet.Dynamics;
 using Box2DNet.Common;
 using Box2DNet.Collision;
-using Box2DNet.Dynamics;
-using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
-using Math = Box2DNet.Common.MathB2;
 
 namespace TestBed
 {
-	public delegate Test TestCreateFcn();
+    public delegate Test TestCreateFcn();
 
 	public class Settings
 	{

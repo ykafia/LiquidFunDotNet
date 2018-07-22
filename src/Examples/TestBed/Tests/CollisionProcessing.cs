@@ -51,10 +51,9 @@ namespace TestBed
 			}
 
 			float xLo = -5.0f, xHi = 5.0f;
-			float yLo = 2.0f, yHi = 35.0f;
 
-			// Small triangle
-			PolygonDef triangleShapeDef = new PolygonDef();
+            // Small triangle
+            PolygonDef triangleShapeDef = new PolygonDef();
 			triangleShapeDef.VertexCount = 3;
 			triangleShapeDef.Vertices[0].Set(-1.0f, 0.0f);
 			triangleShapeDef.Vertices[1].Set(1.0f, 0.0f);

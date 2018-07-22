@@ -94,10 +94,8 @@ namespace TestBed
 			for (int rebounds = 0; rebounds < 10; rebounds++)
 			{
 
-				float lambda = 1;
-				Vec2 normal;
-			    Shape shape = null;
-			    var fixture = _world.RaycastOne(segment, out lambda, out normal, false, null);
+                Shape shape = null;
+                var fixture = _world.RaycastOne(segment, out float lambda, out Vec2 normal, false, null);
 			    if (fixture != null)
 			    {
 			        shape = fixture.Shape;

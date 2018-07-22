@@ -52,12 +52,15 @@
     <Compile Include="Collision\Collision.cs" />
     <Compile Include="Collision\Collision.Distance.cs" />
     <Compile Include="Collision\Collision.TimeOfImpact.cs" />
+    <Compile Include="Collision\Distance.cs" />
+    <Compile Include="Collision\DynamicTree.cs" />
     <Compile Include="Collision\PairManager.cs" />
     <Compile Include="Collision\Shapes\CircleShape.cs" />
     <Compile Include="Collision\Shapes\EdgeShape.cs" />
     <Compile Include="Collision\Shapes\PolygonShape.cs" />
     <Compile Include="Collision\Shapes\ChainShape.cs" />
     <Compile Include="Collision\Shapes\Shape.cs" />
+    <Compile Include="Collision\TimeOfImpact.cs" />
     <Compile Include="Common\Mat22.cs" />
     <Compile Include="Common\Mat33.cs" />
     <Compile Include="Common\MathB2.cs" />
@@ -94,7 +97,12 @@
     <Compile Include="Dynamics\Joints\RevoluteJoint.cs" />
     <Compile Include="Dynamics\World.cs" />
     <Compile Include="Dynamics\WorldCallbacks.cs" />
+    <Compile Include="Particles\Particle.cs" />
+    <Compile Include="Particles\ParticleGroup.cs" />
+    <Compile Include="Particles\ParticleSystem.cs" />
+    <Compile Include="Particles\VoronoiDiagram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rope\Rope.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Collision\TODO.txt" />

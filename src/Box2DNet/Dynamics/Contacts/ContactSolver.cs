@@ -80,8 +80,6 @@ namespace Box2DNet.Dynamics
 			_constraints = new ContactConstraint[_constraintCount];
 			for (int i = 0; i < _constraintCount; i++)
 				_constraints[i] = new ContactConstraint();
-
-			int count = 0;
 			for (int i = 0; i < _constraintCount; ++i)
 			{
 				Contact contact = contacts[i];

@@ -57,7 +57,8 @@ namespace Box2DNet.Collision
 		PolygonShape,
 		EdgeShape,
 		ShapeTypeCount,
-        RopeShape,
+        ChainShape,
+        
     }
 
 	/// <summary>
@@ -79,6 +80,8 @@ namespace Box2DNet.Collision
 		#region Fields
 
 		protected ShapeType _type = ShapeType.UnknownShape;
+        public ShapeType Type {get { return this._type; } }
+
 		internal float _radius;
 
 		#endregion Fields
@@ -143,5 +146,6 @@ namespace Box2DNet.Collision
 		public abstract Vec2 GetSupportVertex(Vec2 d);
 
 		public virtual void Dispose(){}
+        
  	}
 }
